@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
   Flex,
@@ -15,25 +15,14 @@ import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons';
 
 import './Header.scss';
 import Logo from '../Logo/Logo';
-
-const LANGUAGES_LIST = [{
-  label: 'HTML',
-  value: 'html'
-}, {
-  label: 'CSS',
-  value: 'css'
-}, {
-  label: 'Javascript',
-  value: 'javascript'
-}]
+import { LANGUAGES_LIST } from '../../constants';
+import { RootState } from '../../redux/rootReducer';
+import { setlanguage } from '../../redux/reducers/language';
 
 function Header() {
+  const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
-  const [language, setLanguage] = useState(LANGUAGES_LIST[2]);
-
-  const handleLanguageChange = (_value: any) => {
-    setLanguage(_value);
-  }
+  const { language } = useSelector((state: RootState) => state.language);
 
   return (
     <>
@@ -51,7 +40,7 @@ function Header() {
                   {LANGUAGES_LIST.map((lang, index) =>
                     <MenuItem
                       key={`m-${index}`}
-                      onClick={() => handleLanguageChange(lang)}>
+                      onClick={() => dispatch(setlanguage(lang))}>
                       {lang.label}
                     </MenuItem>
                   )}

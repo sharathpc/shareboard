@@ -2,6 +2,7 @@ import { Box, Stack } from '@chakra-ui/react';
 import { FaFileWord } from 'react-icons/fa';
 
 import './Logo.scss';
+import { APP_NAME } from '../../constants';
 
 function Logo({ size = '1em' }) {
   return (
@@ -9,7 +10,7 @@ function Logo({ size = '1em' }) {
       direction={'row'}
       alignItems={'center'}>
       <FaFileWord size={size} />
-      <Box fontSize={size} fontWeight="bold">Share Pad</Box>
+      <Box fontSize={size} fontWeight="bold">{APP_NAME}</Box>
     </Stack>
   );
 }
