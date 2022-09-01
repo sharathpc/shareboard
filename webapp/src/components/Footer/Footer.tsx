@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
   Box,
   chakra,
@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa';
 
 import './Footer.scss';
 import Logo from '../Logo/Logo';
@@ -58,7 +58,11 @@ function Footer() {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
         <Logo />
-        <Text>© 2022 Chakra Templates. All rights reserved</Text>
+        <Stack direction={'row'} alignItems={'center'} fontSize={'small'}>
+          <Text fontWeight={'bold'}>Share Pad</Text>
+          <Text>made with</Text>
+          <FaHeart fontSize={'12px'} color={'red'} />
+        </Stack>
         <Stack direction={'row'} spacing={6}>
           <SocialButton label={'GitHub'} href={'#'}>
             <FaGithub />

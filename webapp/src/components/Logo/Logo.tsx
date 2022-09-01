@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Stack } from '@chakra-ui/react';
 import { FaFileWord } from 'react-icons/fa';
 
