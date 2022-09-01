@@ -5,12 +5,11 @@ import SplitPane from 'react-split-pane';
 import uuid from "react-uuid";
 
 import './App.scss';
+import { SPLIT_PANE_SIZE_KEY } from './constants';
 import CodeEditor from './components/CodeEditor/CodeEditor';
 import TextEditor from './components/TextEditor/TextEditor';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
-
-const SPLIT_PANE_SIZE_KEY = 'splitPos';
 
 const App = () => {
   let navigate = useNavigate();
