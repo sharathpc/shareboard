@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { $getRoot, $getSelection } from "lexical";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
@@ -18,13 +17,11 @@ function TextEditor() {
     nodes: []
   };
 
-  const handleValueChange = (editorState: { read: (arg0: () => void) => void; }) => {
+  const handleValueChange = (editorState: any) => {
     editorState.read(() => {
-      // Read the contents of the EditorState here.
       const root = $getRoot();
-      const selection = $getSelection();
-
-      console.log(root, selection);
+      //const selection = $getSelection();
+      console.log(root.getTextContent());
     });
   }
 

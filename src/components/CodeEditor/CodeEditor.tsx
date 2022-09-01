@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useColorMode } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
 
@@ -23,7 +22,7 @@ function CodeEditor() {
       height='100%'
       /* defaultLanguage={language} */
       defaultLanguage='javascript'
-      defaultValue='// Start writing'
+      defaultValue='// Start writing code'
       options={options}
       onChange={handleValueChange}
     />
