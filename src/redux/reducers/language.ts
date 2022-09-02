@@ -13,12 +13,15 @@ export const languageSlice = createSlice({
         language: LANGUAGES_LIST[2]
     },
     reducers: {
-        setlanguage: (state, { payload }: PayloadAction<Language>) => {
+        setSocketLanguage: (state, { payload }: PayloadAction<Language>) => {
+            state.language = payload
+        },
+        setLanguage: (state, { payload }: PayloadAction<Language>) => {
             state.language = payload
         }
     },
 })
 
-export const { setlanguage } = languageSlice.actions
+export const { setSocketLanguage, setLanguage } = languageSlice.actions
 
 export default languageSlice.reducer

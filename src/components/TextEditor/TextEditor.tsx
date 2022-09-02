@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react';
 import { EditorState } from 'lexical/LexicalEditorState';
@@ -20,18 +20,14 @@ function RestoreFromStatePlugin() {
   const dispatch = useDispatch();
   const [editor] = useLexicalComposerContext()
   const { value } = useSelector((state: RootState) => state.textEditor);
-  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    /* if (isFirstRender.current) {
-      isFirstRender.current = false; */
     const oldValue = JSON.stringify(editor.toJSON().editorState);
 
     if (oldValue !== value) {
       const initialEditorState = editor.parseEditorState(value)
       editor.setEditorState(initialEditorState)
     }
-    /* } */
   }, [value, editor])
 
   const throttleSetValue = throttle((nextValue) => dispatch(setValue(nextValue)), THROTTLE_TIME);
@@ -39,7 +35,7 @@ function RestoreFromStatePlugin() {
   const onChange = useCallback((editorState: EditorState) => {
     const jsonValue = editorState.toJSON();
     throttleSetValue(JSON.stringify(jsonValue))
-  }, [value])
+  }, [throttleSetValue])
 
   return <OnChangePlugin onChange={onChange} />
 }
