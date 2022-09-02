@@ -11,7 +11,6 @@ import {
 import { FaGithub, FaLinkedin, FaHeart } from 'react-icons/fa';
 
 import './Footer.scss';
-import { APP_NAME } from '../../constants';
 import Logo from '../Logo/Logo';
 
 const SocialButton = ({
@@ -60,8 +59,8 @@ function Footer() {
         align={{ base: 'center', md: 'center' }}>
         <Logo />
         <Stack direction={'row'} alignItems={'center'} fontSize={'small'}>
-          <Text fontWeight={'bold'}>{APP_NAME}</Text>
-          <Text>made with</Text>
+          <Text fontWeight={'bold'}>Share</Text>
+          <Text>with</Text>
           <FaHeart fontSize={'12px'} color={'red'} />
         </Stack>
         <Stack direction={'row'} spacing={6}>

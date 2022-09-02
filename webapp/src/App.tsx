@@ -1,36 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Box, Flex, Spinner, useColorModeValue } from '@chakra-ui/react';
 import SplitPane from 'react-split-pane';
-import uuid from "react-uuid";
 
 import './App.scss';
 import { SPLIT_PANE_SIZE_KEY } from './constants';
+import { startConnecting } from './redux/reducers/connection';
 import CodeEditor from './components/CodeEditor/CodeEditor';
 import TextEditor from './components/TextEditor/TextEditor';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 
 const App = () => {
-  let navigate = useNavigate();
+  const dispatch = useDispatch();
   let { id } = useParams();
   let [isLoading, setLoading] = useState(true);
   const borderColor = useColorModeValue('gray.200', 'gray.800');
 
-  const generateShareLink = () => {
-    const newId: string = uuid();
-    navigate(`/${newId}`, {
-      //state: true,
-      replace: true
-    });
-  }
-
   useEffect(() => {
-    if (id) {
-      //connect to websocket
-    }
+    if (id) dispatch(startConnecting(id))
     setLoading(false);
-  }, []);
+  }, [id]);
 
   return (
     <>

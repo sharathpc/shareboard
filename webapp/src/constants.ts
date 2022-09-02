@@ -1,4 +1,6 @@
-const APP_NAME = 'Share Pad';
+const APP_NAME = 'Share Board';
+
+const SERVICE_API_URL = `http://localhost:3000`;
 
 const THROTTLE_TIME = 1000;
 
@@ -22,7 +24,7 @@ const CODE_EDITOR_CONFIG = {
 }
 
 const TEXT_EDITOR_CONFIG = {
-    namespace: 'sharepad',
+    namespace: 'shareboard',
     onError(error: any) {
         throw error;
     },
@@ -31,6 +33,7 @@ const TEXT_EDITOR_CONFIG = {
 
 export {
     APP_NAME,
+    SERVICE_API_URL,
     THROTTLE_TIME,
     LANGUAGES_LIST,
     SPLIT_PANE_SIZE_KEY,

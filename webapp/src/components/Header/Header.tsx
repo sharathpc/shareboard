@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
@@ -11,18 +13,25 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
-import { MoonIcon, SunIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { MoonIcon, SunIcon, ChevronDownIcon, LinkIcon } from '@chakra-ui/icons';
 
 import './Header.scss';
 import Logo from '../Logo/Logo';
 import { LANGUAGES_LIST } from '../../constants';
+import { startConnecting } from '../../redux/reducers/connection';
 import { RootState } from '../../redux/rootReducer';
-import { setlanguage } from '../../redux/reducers/language';
+import { setLanguage } from '../../redux/reducers/language';
 
 function Header() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
   const { language } = useSelector((state: RootState) => state.language);
+  let [liveDisabled, setLiveDisabled] = useState(!!useParams().id);
+
+  const handleLiveShare = () => {
+    dispatch(startConnecting());
+    setLiveDisabled(true);
+  };
 
   return (
     <>
@@ -32,6 +41,10 @@ function Header() {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
+              <Button onClick={handleLiveShare} disabled={liveDisabled}>
+                <LinkIcon />
+              </Button>
+
               <Box>
                 <Menu>
                   <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -41,7 +54,7 @@ function Header() {
                     {LANGUAGES_LIST.map((lang, index) =>
                       <MenuItem
                         key={`m-${index}`}
-                        onClick={() => dispatch(setlanguage(lang))}
+                        onClick={() => dispatch(setLanguage(lang))}
                         style={{ margin: 0 }}>
                         {lang.label}
                       </MenuItem>

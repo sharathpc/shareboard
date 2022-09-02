@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAppDto } from './dto/create-app.dto';
-import { UpdateAppDto } from './dto/update-app.dto';
+
+import { MessageDto } from './dto/message.dto';
+import { Session } from './entities/session.entity';
 
 @Injectable()
 export class AppService {
-  create(createAppDto: CreateAppDto) {
-    return 'This action adds a new app';
+  private sessions = {};
+
+  setLanguage(messageDto: MessageDto) {
+    let sessionObj = this.getSessionObject(messageDto.sessionId);
+    let valueObj = { language: messageDto.value };
+
+    this.sessions[messageDto.sessionId] = { ...sessionObj, ...valueObj }
+    return valueObj;
   }
 
-  findAll() {
-    return `This action returns all app`;
+  setCodeValue(messageDto: MessageDto) {
+    let sessionObj = this.getSessionObject(messageDto.sessionId);
+    let valueObj = { codeValue: messageDto.value };
+
+    this.sessions[messageDto.sessionId] = { ...sessionObj, ...valueObj }
+    return valueObj;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} app`;
+  setTextValue(messageDto: MessageDto) {
+    let sessionObj = this.getSessionObject(messageDto.sessionId);
+    let valueObj = { textValue: messageDto.value };
+
+    this.sessions[messageDto.sessionId] = { ...sessionObj, ...valueObj }
+    return valueObj;
   }
 
-  update(id: number, updateAppDto: UpdateAppDto) {
-    return `This action updates a #${id} app`;
+  setData(messageDto: MessageDto) {
+    this.sessions[messageDto.sessionId] = messageDto.value;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} app`;
+  retriveData(messageDto: MessageDto) {
+    return this.sessions[messageDto.sessionId];
+  }
+
+  private getSessionObject(sessionId): Session {
+    if (!this.sessions[sessionId]) {
+      this.sessions[sessionId] = {};
+    }
+    return this.sessions[sessionId]
   }
 }

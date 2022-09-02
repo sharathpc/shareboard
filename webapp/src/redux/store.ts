@@ -1,16 +1,24 @@
-import { configureStore, Action } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
-import { ThunkAction } from 'redux-thunk'
+import { routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
 
-import rootReducer, { RootState } from './rootReducer'
+import rootReducer from './rootReducer'
+import connectionMiddleware from './middleware/connectionMiddleware'
+import loggerMiddleware from './middleware/loggerMiddleware'
+
+export const history = createBrowserHistory();
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
+        routerMiddleware(history),
+        connectionMiddleware,
+        loggerMiddleware
+    ]),
 })
 
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch()
-export type AppThunk = ThunkAction<void, RootState, unknown, Action>
 
 export default store
