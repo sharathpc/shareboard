@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useColorMode } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
@@ -14,14 +15,23 @@ function CodeEditor() {
   const { language } = useSelector((state: RootState) => state.language);
   const { value } = useSelector((state: RootState) => state.codeEditor);
 
-  const throttleSetValue = throttle((nextValue) => dispatch(setValue(nextValue)), THROTTLE_TIME);
+  const throttleSetValue = useMemo(
+    () => throttle((nextValue) =>
+      dispatch(setValue(nextValue)),
+      THROTTLE_TIME
+    ), [dispatch]
+  );
+
+  useEffect(() => {
+    return () => throttleSetValue.cancel();
+  }, [throttleSetValue])
 
   return (
     <MonacoEditor
       theme={colorMode === 'light' ? 'vs-light' : 'vs-dark'}
       height='100%'
       value={value}
-      language={language.value}
+      language={language}
       options={CODE_EDITOR_CONFIG}
       onChange={(value: string = '') => throttleSetValue(value)}
     />
