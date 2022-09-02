@@ -8,18 +8,17 @@ import { setLanguage, setSocketLanguage } from '../reducers/language';
 import { setValue as setCodeValue, setSocketValue as setSocketCodeValue } from '../reducers/codeEditor';
 import { setValue as setTextValue, setSocketValue as setSocketTextValue } from '../reducers/textEditor';
 
-
-import { SERVICE_API_URL } from '../../constants';
-
 const connectionMiddleware: Middleware = store => {
   let socket: Socket;
   let sessionId: string;
+
+  console.log(process.env.REACT_APP_SERVICE_URL);
 
   return next => action => {
     const isConnectionEstablished = socket && store.getState().connection.isConnected;
 
     if (startConnecting.match(action)) {
-      socket = io(SERVICE_API_URL);
+      socket = io(process.env.REACT_APP_SERVICE_URL as string);
 
       socket.on('connect', () => {
         store.dispatch(connectionEstablished());

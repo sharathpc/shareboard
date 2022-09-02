@@ -1,7 +1,5 @@
 const APP_NAME = 'Share Board';
 
-const SERVICE_API_URL = `http://localhost:3000`;
-
 const THROTTLE_TIME = 1000;
 
 const LANGUAGES_LIST = [{
@@ -33,7 +31,6 @@ const TEXT_EDITOR_CONFIG = {
 
 export {
     APP_NAME,
-    SERVICE_API_URL,
     THROTTLE_TIME,
     LANGUAGES_LIST,
     SPLIT_PANE_SIZE_KEY,
