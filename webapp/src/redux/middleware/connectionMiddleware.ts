@@ -12,8 +12,6 @@ const connectionMiddleware: Middleware = store => {
   let socket: Socket;
   let sessionId: string;
 
-  console.log(process.env.REACT_APP_SERVICE_URL);
-
   return next => action => {
     const isConnectionEstablished = socket && store.getState().connection.isConnected;
 
