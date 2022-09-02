@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     if (id) dispatch(startConnecting(id))
     setLoading(false);
-  }, [id]);
+  }, [id, dispatch]);
 
   return (
     <>

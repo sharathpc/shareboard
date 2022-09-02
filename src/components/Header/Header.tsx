@@ -13,7 +13,13 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
-import { MoonIcon, SunIcon, ChevronDownIcon, LinkIcon } from '@chakra-ui/icons';
+import {
+  MoonIcon,
+  SunIcon,
+  ChevronDownIcon,
+  LinkIcon,
+  CopyIcon
+} from '@chakra-ui/icons';
 
 import './Header.scss';
 import Logo from '../Logo/Logo';
@@ -33,6 +39,10 @@ function Header() {
     setLiveDisabled(true);
   };
 
+  const handleLiveCopy = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -41,9 +51,14 @@ function Header() {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={handleLiveShare} disabled={liveDisabled}>
-                <LinkIcon />
-              </Button>
+              {liveDisabled ?
+                <Button onClick={handleLiveCopy} title='Copy link!'>
+                  <CopyIcon />
+                </Button> :
+                <Button onClick={handleLiveShare}>
+                  <LinkIcon />
+                </Button>
+              }
 
               <Box>
                 <Menu>
@@ -63,7 +78,7 @@ function Header() {
                 </Menu>
               </Box>
 
-              <Button onClick={toggleColorMode}>
+              <Button onClick={toggleColorMode} title='Change theme'>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
             </Stack>

@@ -34,6 +34,7 @@ const connectionMiddleware: Middleware = store => {
             }
           });
           store.dispatch(push(`/${sessionId}`));
+          navigator.clipboard.writeText(window.location.href);
         } else {
           sessionId = store.getState().router.location.pathname.substring(1);
           socket.emit('retriveData', { sessionId, value: null });
