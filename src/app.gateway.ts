@@ -1,5 +1,5 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
+import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
 
 import { AppService } from './app.service';
 import { MessageDto } from './dto/message.dto';
@@ -8,8 +8,6 @@ import { MessageDto } from './dto/message.dto';
   cors: '*'
 })
 export class AppGateway {
-  @WebSocketServer() server: Server;
-
   constructor(private readonly appService: AppService) { }
 
   @SubscribeMessage('language/setLanguage')
@@ -18,7 +16,7 @@ export class AppGateway {
     @ConnectedSocket() client: Socket
   ) {
     const data = this.appService.setLanguage(messageDto);
-    client.broadcast.emit('readData', data);
+    client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
   @SubscribeMessage('codeEditor/setValue')
@@ -27,7 +25,7 @@ export class AppGateway {
     @ConnectedSocket() client: Socket
   ) {
     const data = this.appService.setCodeValue(messageDto);
-    client.broadcast.emit('readData', data);
+    client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
   @SubscribeMessage('textEditor/setValue')
@@ -36,11 +34,15 @@ export class AppGateway {
     @ConnectedSocket() client: Socket
   ) {
     const data = this.appService.setTextValue(messageDto);
-    client.broadcast.emit('readData', data);
+    client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
   @SubscribeMessage('setData')
-  setData(@MessageBody() messageDto: MessageDto) {
+  setData(
+    @MessageBody() messageDto: MessageDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    client.join(messageDto.sessionId);
     return this.appService.setData(messageDto);
   }
 
@@ -50,6 +52,7 @@ export class AppGateway {
     @ConnectedSocket() client: Socket
   ) {
     const data = await this.appService.retriveData(messageDto);
+    client.join(messageDto.sessionId);
     client.emit('readData', data);
   }
 }
