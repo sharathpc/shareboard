@@ -1,34 +1,55 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, ConnectedSocket } from '@nestjs/websockets';
+import { Socket, Server } from 'socket.io';
+
 import { AppService } from './app.service';
-import { CreateAppDto } from './dto/create-app.dto';
-import { UpdateAppDto } from './dto/update-app.dto';
+import { MessageDto } from './dto/message.dto';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: '*'
+})
 export class AppGateway {
-  constructor(private readonly appService: AppService) {}
+  @WebSocketServer() server: Server;
 
-  @SubscribeMessage('createApp')
-  create(@MessageBody() createAppDto: CreateAppDto) {
-    return this.appService.create(createAppDto);
+  constructor(private readonly appService: AppService) { }
+
+  @SubscribeMessage('language/setLanguage')
+  setLanguage(
+    @MessageBody() messageDto: MessageDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    const data = this.appService.setLanguage(messageDto);
+    client.broadcast.emit('readData', data);
   }
 
-  @SubscribeMessage('findAllApp')
-  findAll() {
-    return this.appService.findAll();
+  @SubscribeMessage('codeEditor/setValue')
+  setCodeValue(
+    @MessageBody() messageDto: MessageDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    const data = this.appService.setCodeValue(messageDto);
+    client.broadcast.emit('readData', data);
   }
 
-  @SubscribeMessage('findOneApp')
-  findOne(@MessageBody() id: number) {
-    return this.appService.findOne(id);
+  @SubscribeMessage('textEditor/setValue')
+  setTextValue(
+    @MessageBody() messageDto: MessageDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    const data = this.appService.setTextValue(messageDto);
+    client.broadcast.emit('readData', data);
   }
 
-  @SubscribeMessage('updateApp')
-  update(@MessageBody() updateAppDto: UpdateAppDto) {
-    return this.appService.update(updateAppDto.id, updateAppDto);
+  @SubscribeMessage('setData')
+  setData(@MessageBody() messageDto: MessageDto) {
+    return this.appService.setData(messageDto);
   }
 
-  @SubscribeMessage('removeApp')
-  remove(@MessageBody() id: number) {
-    return this.appService.remove(id);
+  @SubscribeMessage('retriveData')
+  async retriveData(
+    @MessageBody() messageDto: MessageDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    const data = await this.appService.retriveData(messageDto);
+    client.emit('readData', data);
   }
 }
