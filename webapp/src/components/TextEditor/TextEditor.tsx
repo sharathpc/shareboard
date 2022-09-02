@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@chakra-ui/react';
 import { EditorState } from 'lexical/LexicalEditorState';
@@ -17,30 +17,38 @@ import { setValue } from '../../redux/reducers/textEditor';
 
 
 function RestoreFromStatePlugin() {
-  const dispatch = useDispatch();
   const [editor] = useLexicalComposerContext()
   const { value } = useSelector((state: RootState) => state.textEditor);
 
   useEffect(() => {
     const oldValue = JSON.stringify(editor.toJSON().editorState);
-
     if (oldValue !== value) {
       const initialEditorState = editor.parseEditorState(value)
       editor.setEditorState(initialEditorState)
     }
   }, [value, editor])
 
-  const throttleSetValue = throttle((nextValue) => dispatch(setValue(nextValue)), THROTTLE_TIME);
-
-  const onChange = useCallback((editorState: EditorState) => {
-    const jsonValue = editorState.toJSON();
-    throttleSetValue(JSON.stringify(jsonValue))
-  }, [throttleSetValue])
-
-  return <OnChangePlugin onChange={onChange} />
+  return <OnChangePlugin onChange={() => { }} />
 }
 
 function TextEditor() {
+  const dispatch = useDispatch();
+  const { value } = useSelector((state: RootState) => state.textEditor);
+
+  const throttleSetValue = useMemo(
+    () => throttle((nextValue) =>
+      dispatch(setValue(nextValue)),
+      THROTTLE_TIME
+    ), [dispatch]
+  );
+
+  const onChange = (editorState: EditorState) => {
+    const changeValue = JSON.stringify(editorState.toJSON());
+    if (changeValue !== value) {
+      throttleSetValue(changeValue);
+    }
+  }
+
   return (
     <LexicalComposer initialConfig={TEXT_EDITOR_CONFIG}>
       <Box position='relative' h='100%'>
@@ -50,6 +58,7 @@ function TextEditor() {
         />
       </Box>
       <RestoreFromStatePlugin />
+      <OnChangePlugin onChange={onChange} />
       <HistoryPlugin />
     </LexicalComposer>
   );

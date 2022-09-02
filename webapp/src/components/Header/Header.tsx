@@ -8,15 +8,11 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
+  Select,
 } from '@chakra-ui/react';
 import {
   MoonIcon,
   SunIcon,
-  ChevronDownIcon,
   LinkIcon,
   CopyIcon
 } from '@chakra-ui/icons';
@@ -60,23 +56,17 @@ function Header() {
                 </Button>
               }
 
-              <Box>
-                <Menu>
-                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                    {language.label}
-                  </MenuButton>
-                  <MenuList>
-                    {LANGUAGES_LIST.map((lang, index) =>
-                      <MenuItem
-                        key={`m-${index}`}
-                        onClick={() => dispatch(setLanguage(lang))}
-                        style={{ margin: 0 }}>
-                        {lang.label}
-                      </MenuItem>
-                    )}
-                  </MenuList>
-                </Menu>
-              </Box>
+              <Select
+                defaultValue={language}
+                onChange={(event) => dispatch(setLanguage(event.target.value))}>
+                {LANGUAGES_LIST.map((lang, index) =>
+                  <option
+                    key={`m-${index}`}
+                    value={lang}
+                  >{lang}
+                  </option>
+                )}
+              </Select>
 
               <Button onClick={toggleColorMode} title='Change theme'>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
