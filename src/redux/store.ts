@@ -1,4 +1,4 @@
-import { configureStore, Action, getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore, Action } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { ThunkAction } from 'redux-thunk'
 

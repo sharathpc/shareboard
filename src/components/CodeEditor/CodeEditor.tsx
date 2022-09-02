@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useColorMode } from '@chakra-ui/react';
 import MonacoEditor from '@monaco-editor/react';
+import throttle from 'lodash.throttle';
 
 import './CodeEditor.scss';
-import { CODE_EDITOR_CONFIG } from '../../constants';
+import { CODE_EDITOR_CONFIG, THROTTLE_TIME } from '../../constants';
 import { RootState } from '../../redux/rootReducer';
 import { setValue } from '../../redux/reducers/codeEditor';
 
@@ -13,9 +14,7 @@ function CodeEditor() {
   const { language } = useSelector((state: RootState) => state.language);
   const { value } = useSelector((state: RootState) => state.codeEditor);
 
-  const handleValueChange = (value: string = '') => {
-    dispatch(setValue(value));
-  }
+  const throttleSetValue = throttle((nextValue) => dispatch(setValue(nextValue)), THROTTLE_TIME);
 
   return (
     <MonacoEditor
@@ -24,7 +23,7 @@ function CodeEditor() {
       value={value}
       language={language.value}
       options={CODE_EDITOR_CONFIG}
-      onChange={handleValueChange}
+      onChange={(value: string = '') => throttleSetValue(value)}
     />
   );
 }

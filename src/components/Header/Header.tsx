@@ -32,20 +32,23 @@ function Header() {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Menu>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {language.label}
-                </MenuButton>
-                <MenuList>
-                  {LANGUAGES_LIST.map((lang, index) =>
-                    <MenuItem
-                      key={`m-${index}`}
-                      onClick={() => dispatch(setlanguage(lang))}>
-                      {lang.label}
-                    </MenuItem>
-                  )}
-                </MenuList>
-              </Menu>
+              <Box>
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                    {language.label}
+                  </MenuButton>
+                  <MenuList>
+                    {LANGUAGES_LIST.map((lang, index) =>
+                      <MenuItem
+                        key={`m-${index}`}
+                        onClick={() => dispatch(setlanguage(lang))}
+                        style={{ margin: 0 }}>
+                        {lang.label}
+                      </MenuItem>
+                    )}
+                  </MenuList>
+                </Menu>
+              </Box>
 
               <Button onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
