@@ -5,35 +5,37 @@ import { AppService } from './app.service';
 import { MessageDto } from './dto/message.dto';
 
 @WebSocketGateway({
-  cors: '*'
+  cors: {
+    origin: '*'
+  }
 })
 export class AppGateway {
   constructor(private readonly appService: AppService) { }
 
   @SubscribeMessage('language/setLanguage')
-  setLanguage(
+  async setLanguage(
     @MessageBody() messageDto: MessageDto,
     @ConnectedSocket() client: Socket
   ) {
-    const data = this.appService.setLanguage(messageDto);
+    const data = await this.appService.setLanguage(messageDto);
     client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
   @SubscribeMessage('codeEditor/setValue')
-  setCodeValue(
+  async setCodeValue(
     @MessageBody() messageDto: MessageDto,
     @ConnectedSocket() client: Socket
   ) {
-    const data = this.appService.setCodeValue(messageDto);
+    const data = await this.appService.setCodeValue(messageDto);
     client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
   @SubscribeMessage('textEditor/setValue')
-  setTextValue(
+  async setTextValue(
     @MessageBody() messageDto: MessageDto,
     @ConnectedSocket() client: Socket
   ) {
-    const data = this.appService.setTextValue(messageDto);
+    const data = await this.appService.setTextValue(messageDto);
     client.broadcast.to(messageDto.sessionId).emit('readData', data);
   }
 
