@@ -57,7 +57,7 @@ function Header() {
               }
 
               <Select
-                defaultValue={language}
+                value={language}
                 onChange={(event) => dispatch(setLanguage(event.target.value))}>
                 {LANGUAGES_LIST.map((lang, index) =>
                   <option
