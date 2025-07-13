@@ -65,10 +65,10 @@ function Footer() {
           <FaHeart fontSize={'12px'} color={'red'} />
         </Stack>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'GitHub'} href={'https://github.com/sharath0033/shareboard'}>
+          <SocialButton label={'GitHub'} href={'https://github.com/sharathpc/shareboard'}>
             <FaGithub />
           </SocialButton>
-          <SocialButton label={'LinkedIn'} href={'https://www.linkedin.com/in/sharath0033'}>
+          <SocialButton label={'LinkedIn'} href={'https://www.linkedin.com/in/sharathpc'}>
             <FaLinkedin />
           </SocialButton>
         </Stack>
