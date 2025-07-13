@@ -6,7 +6,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> A real-time collaborative platform for code editing and rich text collaboration with live session sharing.
+A real-time collaborative platform for code editing and rich text collaboration with live session sharing.
 
 
 🔗 **Live Demo**:
