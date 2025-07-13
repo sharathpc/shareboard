@@ -26,13 +26,14 @@ import { setLanguage } from '../../redux/reducers/language';
 
 function Header() {
   const dispatch = useDispatch();
+  const params = useParams();
   const { colorMode, toggleColorMode } = useColorMode();
   const { language } = useSelector((state: RootState) => state.language);
-  let [liveDisabled, setLiveDisabled] = useState(!!useParams().id);
+  const [liveEnabled, setLiveEnabled] = useState(!!params.id);
 
   const handleLiveShare = () => {
     dispatch(startConnecting());
-    setLiveDisabled(true);
+    setLiveEnabled(true);
   };
 
   const handleLiveCopy = () => {
@@ -47,7 +48,7 @@ function Header() {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              {liveDisabled ?
+              {liveEnabled ?
                 <Button onClick={handleLiveCopy} title='Copy link!'>
                   <CopyIcon />
                 </Button> :
@@ -57,7 +58,7 @@ function Header() {
               }
 
               <Select
-                defaultValue={language}
+                value={language}
                 onChange={(event) => dispatch(setLanguage(event.target.value))}>
                 {LANGUAGES_LIST.map((lang, index) =>
                   <option

@@ -1,34 +1,41 @@
 version: "3.8"
 
 services:
-  # Firebase Firestore
-  # database:
-  #   image: goatlab/firebase-emulator:latest
-  #   ports:
-  #     - 8080:8080
-  #     - 4000:4000
-  #   volumes:
-  #     - ./firebaseSeed:/app/firebaseSeed
-  #   command: firebase emulators:start --project highlevel-68ed3 --only firestore --import='./firebaseSeed' --export-on-exit
+  # Postgres Database
+  database:
+    image: postgres:13
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: shareboard
+      POSTGRES_PASSWORD: shareboard
+      POSTGRES_DB: shareboard
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   # NestJS Services
   services:
     build:
       dockerfile: Dockerfile
       context: ./services
+    environment: 
+      DATABASE_URL: 'postgresql://shareboard:shareboard@database:5432/shareboard?sslmode=disable'
     ports:
       - 3000:3000
-    # links:
-    #   - database
+    links:
+      - database
   
   # React Webapp
   webapp:
     build:
       dockerfile: Dockerfile
       context: ./webapp
-    environment:
-     REACT_APP_SERVICE_URL: 'http://localhost:3000'
+      args:
+        REACT_APP_SERVICE_URL: 'http://localhost:3000'
     ports:
       - 4200:80
     links:
       - services
+
+volumes:
+  pgdata:
